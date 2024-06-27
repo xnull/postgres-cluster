@@ -1,0 +1,33 @@
+version: '3'
+
+set: [pipefail]
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  watch_topic:
+    cmds:
+      - |
+        docker run -it --rm \
+          --name watcher \
+          --network {{.NETWORK_NAME}} \
+          -e ZOOKEEPER_CONNECT={{.ZOOKEEPER_CONTAINER}}:2181 \
+          -e KAFKA_BROKER={{.KAFKA_CONTAINER}}:9092 \
+          quay.io/debezium/kafka:{{.DEBEZIUM_VERSION}} \
+          watch-topic -a -k dbserver1.inventory.{{.TABLE_NAME}}
+
+  connector_logs:
+    vars:
+      CONNECTOR_TYPE: postgres
+    cmds:
+      - |
+        curl -i -X POST \
+          -H "Accept:application/json" \
+          -H "Content-Type:application/json" \
+          localhost:8083/connector-plugins/{{.CONNECTOR_TYPE}}/config/validate
+
+  run_alpine:
+    cmds:
+      - docker run -ti --rm --network {{.NETWORK_NAME}} --name client alpine:latest sh

@@ -1,0 +1,12 @@
+version: '3'
+
+vars:
+  NETWORK_NAME: postgres-net
+
+  POSTGRES_IMAGE: postgres
+  PG_PASS: postgres
+
+  DB_NAME: postgres
+  TABLE_NAME: customers
+
+  MAIN_CONTAINER: postgres-main

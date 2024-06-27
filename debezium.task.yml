@@ -1,0 +1,108 @@
+version: '3'
+
+set: [pipefail]
+
+includes:
+  cfg: vars.task.yml
+  sql:
+    taskfile: sql.task.yml
+    internal: true
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  #https://debezium.io/documentation/reference/stable/tutorial.html
+  # https://github.com/debezium/debezium-examples/blob/main/tutorial/docker-compose-postgres.yaml
+  restart_debezium:
+    cmds:
+      - task: kill_all
+
+      - task: docker_create_network
+
+      # zookeeper
+      - |
+        docker run -it --rm -d \
+          --network {{.NETWORK_NAME}} \
+          --name {{.ZOOKEEPER_CONTAINER}} \
+          -p 2181:2181 \
+          -p 2888:2888 \
+          -p 3888:3888 \
+          quay.io/debezium/zookeeper:{{.DEBEZIUM_VERSION}}
+      - sleep 5
+
+      # kafka
+      - |
+        docker run -it --rm -d \
+          --network {{.NETWORK_NAME}} \
+          --name {{.KAFKA_CONTAINER}} \
+          -p 9092:9092 \
+          -e ZOOKEEPER_CONNECT={{.ZOOKEEPER_CONTAINER}}:2181 \
+          quay.io/debezium/kafka:{{.DEBEZIUM_VERSION}}
+      - sleep 5
+
+      # postgres
+      # https://github.com/debezium/debezium-examples/blob/main/tutorial/register-postgres.json
+      - |
+        docker run -it --rm -d \
+          --network {{.NETWORK_NAME}} \
+          --name {{.DEBEZIUM_POSTGRES_CONTAINER}} \
+          -p 5432:5432 \
+          -e POSTGRES_USER=postgres \
+          -e POSTGRES_PASSWORD={{.PG_PASS}} \
+          quay.io/debezium/example-postgres:{{.DEBEZIUM_VERSION}}
+      - sleep 5
+
+      #connect
+      - |
+        docker run -it --rm -d \
+          --network {{.NETWORK_NAME}} \
+          --name {{.DEBEZIUM_CONNECT_CONTAINER}} \
+          -p 8083:8083 \
+          -e GROUP_ID=1 \
+          -e CONFIG_STORAGE_TOPIC=my_connect_configs \
+          -e OFFSET_STORAGE_TOPIC=my_connect_offsets \
+          -e STATUS_STORAGE_TOPIC=my_connect_statuses \
+          -e BOOTSTRAP_SERVERS={{.KAFKA_CONTAINER}}:9092 \
+          quay.io/debezium/connect:{{.DEBEZIUM_VERSION}}
+      - sleep 15
+
+      - task: register_connector
+      - sleep 3
+
+  register_connector:
+    cmds:
+      - |
+        curl -i -X POST \
+          -H "Accept:application/json" \
+          -H "Content-Type:application/json" \
+          localhost:8083/connectors/ \
+          -d @connector.json
+
+  restart:
+    deps:
+      - kill
+      - docker_create_network
+    cmds:
+      - docker run -ti --rm --network {{.NETWORK_NAME}} --name {{.DEBEZIUM_POSTGRES_CONTAINER}} -e POSTGRES_PASSWORD={{.PG_PASS}} -d {{.DEBEZIUM_IMAGE}}
+
+  kill:
+    cmds:
+      - docker kill {{.DEBEZIUM_POSTGRES_CONTAINER}} || true
+    internal: true
+
+  kill_all:
+    cmds:
+      - docker kill {{.DEBEZIUM_POSTGRES_CONTAINER}} || true
+      - docker kill {{.ZOOKEEPER_CONTAINER}} || true
+      - docker kill {{.KAFKA_CONTAINER}} || true
+      - docker kill {{.DEBEZIUM_CONNECT_CONTAINER}} || true
+
+      - task: kill
+
+  docker_create_network:
+    cmds:
+      - docker network create {{.NETWORK_NAME}} || true
+    internal: true
+

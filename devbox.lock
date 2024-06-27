@@ -1,0 +1,185 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "go-task@3.37.2": {
+      "last_modified": "2024-05-29T10:04:41Z",
+      "resolved": "github:NixOS/nixpkgs/ac82a513e55582291805d6f09d35b6d8b60637a1#go-task",
+      "source": "devbox-search",
+      "version": "3.37.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/sxx5qi67pni1188alq2a8vxnyliy4mpk-go-task-3.37.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/sxx5qi67pni1188alq2a8vxnyliy4mpk-go-task-3.37.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/6ji3xndcf45yrsrvbv3rkp789bz6rcby-go-task-3.37.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/6ji3xndcf45yrsrvbv3rkp789bz6rcby-go-task-3.37.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gf9ygvd2m7v2hv3349k6q3jgk0bfqr9z-go-task-3.37.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gf9ygvd2m7v2hv3349k6q3jgk0bfqr9z-go-task-3.37.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/9bswbbgd0fdbqa40yrj7f595303zbrnj-go-task-3.37.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/9bswbbgd0fdbqa40yrj7f595303zbrnj-go-task-3.37.2"
+        }
+      }
+    },
+    "jq@1.7.1": {
+      "last_modified": "2024-06-09T00:38:05Z",
+      "resolved": "github:NixOS/nixpkgs/3bcedce9f4de37570242faf16e1e143583407eab#jq",
+      "source": "devbox-search",
+      "version": "1.7.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/68s205iqz4x1fvry7nkhg8g270v1vcy4-jq-1.7.1-bin",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/a5dywljs6papj8qcz9414r91f69r4y9r-jq-1.7.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/f20hrh4qzvk2577glb7s5l114gmirngj-jq-1.7.1"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/13hz87fi6v8yha2i0hqs3hgjr28wh5wc-jq-1.7.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/ghj56yphlx06ws4wzv6370smcqy7q2j7-jq-1.7.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/19mhwafp54qa8di0z3rxwb692nq1hagw-jq-1.7.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/68s205iqz4x1fvry7nkhg8g270v1vcy4-jq-1.7.1-bin"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/ndiybnyqr1ph1vjg3k12nk4563mhxppm-jq-1.7.1-bin",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/m6iwqw0050fw4wc9xmr5pqs3ah5ry7ax-jq-1.7.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/fwkhzdlq9xiz2rl5bkvmj772p9hvqj99-jq-1.7.1"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/kvrsi2isj17fm1i1q547y318pkdn8yp7-jq-1.7.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/bb0ah4vxmzgc0sqykmbv5fypgk9nnkw1-jq-1.7.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/amjqcw9ja9zd2dwm1va91in764xvpnx3-jq-1.7.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/ndiybnyqr1ph1vjg3k12nk4563mhxppm-jq-1.7.1-bin"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/bpfyriz1v75s27jjp334xmz76i39jb5m-jq-1.7.1-bin",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/z9k3kvc4vd3nalz0zy642jwldjx8nycz-jq-1.7.1-man",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/js9gb09z8qzf0i7xaqnqkriy43d4p371-jq-1.7.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/h092iqq78iqfb2i4zr9x5p6pjapm4gj0-jq-1.7.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/m83fjdl51389phnrm9yw81xq47b1n6nq-jq-1.7.1-lib"
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/ja0jnfqjrlcvrmhd0x5v61nccdybp86g-jq-1.7.1"
+            }
+          ],
+          "store_path": "/nix/store/bpfyriz1v75s27jjp334xmz76i39jb5m-jq-1.7.1-bin"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "bin",
+              "path": "/nix/store/7y2nxi5svi3ya06jyfw7l06rxvfb1zzf-jq-1.7.1-bin",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/shvd454wy3lnhirj922yrzffzscci28s-jq-1.7.1-man",
+              "default": true
+            },
+            {
+              "name": "out",
+              "path": "/nix/store/33flg1kzjqn426gg4yfz1zkgpj9cmc4j-jq-1.7.1"
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/n5chc8i5za5jrr4biwwgx7a96p0a7aq9-jq-1.7.1-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/5cq70lcqc2aph4q03brijk3alfh5rnmz-jq-1.7.1-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/bjf63mfkn3r6svmb4qlsy1v8bff4dwa9-jq-1.7.1-lib"
+            }
+          ],
+          "store_path": "/nix/store/7y2nxi5svi3ya06jyfw7l06rxvfb1zzf-jq-1.7.1-bin"
+        }
+      }
+    }
+  }
+}

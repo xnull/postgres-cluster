@@ -1,0 +1,73 @@
+version: '3'
+
+set: [pipefail]
+
+requires:
+  vars:
+    - CFG_FILE
+
+includes:
+  cfg: "{{.CFG_FILE}}"
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  create_test_db:
+    cmds:
+      - task: execute
+        vars:
+          SQL_QUERY: 'create database {{.DB_NAME}};'
+    ignore_error: true
+
+  create_test_table:
+    cmds:
+      - task: execute_on_db
+        vars:
+          SQL_QUERY: 'CREATE TABLE {{.TABLE_NAME}}(name varchar(80));'
+      - task: execute_on_db
+        vars:
+          SQL_QUERY: "INSERT INTO {{.TABLE_NAME}} (name) VALUES('customer1');"
+    ignore_error: true
+
+  select_all_test_table:
+    cmds:
+      - task: execute_on_db
+        vars:
+          SQL_QUERY: 'select * from {{.TABLE_NAME}};'
+
+  list_tables:
+    cmds:
+      - task: execute_on_db
+        vars:
+          SQL_QUERY: '\dt'
+
+  run_psql:
+    requires:
+      vars:
+        - SERVER
+    cmds:
+      - docker run -it --rm --network {{.NETWORK_NAME}} -e PGPASSWORD={{.PG_PASS}} postgres psql -h {{.SERVER}} -U postgres
+
+  execute:
+    requires:
+      vars:
+        - SERVER
+        - SQL_QUERY
+    cmds:
+      - 'docker run -it --rm --network {{.NETWORK_NAME}} -e PGPASSWORD={{.PG_PASS}} postgres psql -h {{.SERVER}} -U postgres -c "{{.SQL_QUERY}}"'
+
+  execute_on_db:
+    requires:
+      vars:
+        - SERVER
+        - SQL_QUERY
+        - DB_NAME
+    cmds:
+      - |
+        docker run -it --rm \
+          --network {{.NETWORK_NAME}} \
+          -e PGPASSWORD={{.PG_PASS}} \
+          {{.POSTGRES_IMAGE}} \
+          psql -h {{.SERVER}} -U postgres --dbname={{.DB_NAME}} -c "{{.SQL_QUERY}}"

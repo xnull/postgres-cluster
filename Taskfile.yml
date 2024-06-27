@@ -1,0 +1,27 @@
+version: '3'
+
+set: [pipefail]
+
+includes:
+  cfg: vars.task.yml
+  sql:
+    taskfile: sql.task.yml
+    vars:
+      CFG_FILE: "vars.task.yml"
+
+  debezium: debezium.task.yml
+  utils: utils.task.yml
+
+  #replication: replication/Taskfile.yml
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  full_debezium_run:
+    cmds:
+      # - task: sql:create_test_db
+      - task: debezium:restart_debezium
+      - task: sql:create_test_table
+

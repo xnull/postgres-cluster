@@ -1,0 +1,50 @@
+version: '3'
+
+set: [pipefail]
+
+#docs:
+#  streaming_replication: https://hevodata.com/learn/postgresql-streaming-replication/#master1
+
+includes:
+  cfg: "replication.vars.task.yml"
+  sql:
+    taskfile: ../common/sql.task.yml
+    vars:
+      CFG_FILE: "replication.vars.task.yml"
+    internal: true
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  full_run:
+    cmds:
+      - task: restart_postgres
+      - task: create_replication_user
+
+  restart_postgres:
+    deps:
+      - kill
+    cmds:
+      - |
+        docker run -ti -d \
+          --network {{.NETWORK_NAME}} \
+          --name {{.MAIN_CONTAINER}} \
+          -e POSTGRES_PASSWORD={{.PG_PASS}} \
+          -v "$(pwd)/replication/postgresql.conf":/etc/postgresql/postgresql.conf \
+          {{.POSTGRES_IMAGE}} \
+          -c 'config_file=/etc/postgresql/postgresql.conf'
+
+  create_replication_user:
+    cmds:
+      - task: sql:execute_on_db
+        vars:
+          SERVER: "{{.MAIN_CONTAINER}}"
+          SQL_QUERY: "CREATE USER replication_user REPLICATION LOGIN ENCRYPTED PASSWORD repl;"
+    ignore_error: true
+
+  kill:
+    cmds:
+      - docker kill {{.POSTGRES_CONTAINER}} || true
+    internal: true

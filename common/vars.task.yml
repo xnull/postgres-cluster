@@ -1,0 +1,20 @@
+version: '3'
+
+vars:
+  NETWORK_NAME: postgres-net
+
+  DEBEZIUM_IMAGE: debezium/postgres
+  POSTGRES_IMAGE: postgres
+
+  PG_PASS: postgres
+
+  DB_NAME: postgres
+  TABLE_NAME: customers
+
+  ZOOKEEPER_CONTAINER: zookeeper
+  KAFKA_CONTAINER: kafka
+  DEBEZIUM_CONNECT_CONTAINER: connect
+  DEBEZIUM_POSTGRES_CONTAINER: debezium-postgres
+  POSTGRES_CONTAINER: postgres
+
+  DEBEZIUM_VERSION: 2.7
