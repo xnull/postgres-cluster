@@ -26,25 +26,38 @@ tasks:
   restart_postgres:
     deps:
       - kill
+    vars:
+      CURR_DIR:
+        sh: pwd
     cmds:
+      - task: rebuild_volume
       - |
-        docker run -ti -d \
+        docker run -ti \
           --network {{.NETWORK_NAME}} \
           --name {{.MAIN_CONTAINER}} \
           -e POSTGRES_PASSWORD={{.PG_PASS}} \
-          -v "$(pwd)/replication/postgresql.conf":/etc/postgresql/postgresql.conf \
+          -v "{{.CURR_DIR}}/main.postgresql.conf":/etc/postgresql/postgresql.conf \
+          -v "{{.CURR_DIR}}/pg_hba.conf":/var/lib/postgresql/data/pg_hba.conf \
           {{.POSTGRES_IMAGE}} \
           -c 'config_file=/etc/postgresql/postgresql.conf'
+      - sleep 3
+
+  rebuild_volume:
+    cmds:
+      - docker volume rm pg-cluster-vol
+      - docker volume create --name pg-cluster-vol
+
 
   create_replication_user:
     cmds:
       - task: sql:execute_on_db
         vars:
           SERVER: "{{.MAIN_CONTAINER}}"
-          SQL_QUERY: "CREATE USER replication_user REPLICATION LOGIN ENCRYPTED PASSWORD repl;"
+          SQL_QUERY: "CREATE USER replication_user REPLICATION LOGIN ENCRYPTED PASSWORD 'repl';"
     ignore_error: true
 
   kill:
     cmds:
-      - docker kill {{.POSTGRES_CONTAINER}} || true
+      - docker kill {{.MAIN_CONTAINER}} || true
+      - docker rm {{.MAIN_CONTAINER}} || true
     internal: true

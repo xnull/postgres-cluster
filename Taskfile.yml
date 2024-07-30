@@ -3,14 +3,16 @@ version: '3'
 set: [pipefail]
 
 includes:
-  cfg: vars.task.yml
+  cfg: common/vars.task.yml
+
   sql:
-    taskfile: sql.task.yml
+    taskfile: common/sql.task.yml
     vars:
-      CFG_FILE: "vars.task.yml"
+      CFG_FILE: "common/vars.task.yml"
 
   debezium: debezium.task.yml
-  utils: utils.task.yml
+
+  utils: common/utils.task.yml
 
   #replication: replication/Taskfile.yml
 
