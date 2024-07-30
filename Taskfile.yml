@@ -3,12 +3,15 @@ version: '3'
 set: [pipefail]
 
 includes:
-  cfg: common/vars.task.yml
+  cfg:
+    taskfile: common/vars.task.yml
+    internal: true
 
   sql:
     taskfile: common/sql.task.yml
     vars:
       CFG_FILE: "common/vars.task.yml"
+      SERVER: "{{.DEBEZIUM_POSTGRES_CONTAINER}}"
 
   debezium: debezium.task.yml
 
@@ -26,4 +29,3 @@ tasks:
       # - task: sql:create_test_db
       - task: debezium:restart_debezium
       - task: sql:create_test_table
-

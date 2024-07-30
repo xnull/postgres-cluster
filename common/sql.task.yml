@@ -5,6 +5,7 @@ set: [pipefail]
 requires:
   vars:
     - CFG_FILE
+    - SERVER
 
 includes:
   cfg: "{{.CFG_FILE}}"

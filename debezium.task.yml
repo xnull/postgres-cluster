@@ -3,7 +3,10 @@ version: '3'
 set: [pipefail]
 
 includes:
-  cfg: common/vars.task.yml
+  cfg:
+    taskfile: common/vars.task.yml
+    internal: true
+
   sql:
     taskfile: common/sql.task.yml
     internal: true
